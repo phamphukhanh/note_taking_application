@@ -24,6 +24,10 @@
     background-color: #dcdcdc;
 }
 
+.card {
+    outline: #a0a0a0 solid 1px;
+}
+
 a.card-link {
     color: black;
     text-decoration: none;
