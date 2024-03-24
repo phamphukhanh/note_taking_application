@@ -19,7 +19,8 @@
     font-weight: 500;
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
+.dropdown-item:focus,
+.dropdown-item:hover {
     background-color: #dcdcdc;
 }
 
