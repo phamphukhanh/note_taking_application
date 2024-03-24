@@ -19,6 +19,10 @@
     font-weight: 500;
 }
 
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: #dcdcdc;
+}
+
 a.card-link {
     color: black;
     text-decoration: none;
@@ -27,4 +31,12 @@ a.card-link {
 .card:hover {
     outline: #4f4f4f solid 2px;
     background-color: #d9dbdc;
+}
+
+.mt-6 {
+    margin-top: 5.5rem;
+}
+
+.search-bar {
+    width: 500px;
 }
