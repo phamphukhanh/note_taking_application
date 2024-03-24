@@ -1,0 +1,30 @@
+.avatar {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border-radius: 50%;
+    /* In case of transparent photo, set the background like this */
+    background-color: #f8f9fa;
+}
+
+.nav-link.dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    -webkit-text-stroke: #0b5ed7 1px;
+    text-shadow: 2px 2px 0 #0b5ed7;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+a.card-link {
+    color: black;
+    text-decoration: none;
+}
+
+.card:hover {
+    outline: #4f4f4f solid 2px;
+    background-color: #d9dbdc;
+}
