@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from .models import Note
-from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Note
 from django.db.models import Q
 # Create your views here.
 

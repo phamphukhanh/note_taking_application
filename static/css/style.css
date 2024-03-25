@@ -45,3 +45,9 @@ a.card-link {
 .search-bar {
     width: 500px;
 }
+
+.img,
+.login-wrap {
+    border: #4f4f4f solid 2px;
+    width: 50%;
+}

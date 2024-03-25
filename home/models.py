@@ -28,6 +28,7 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+
     class Meta:
         managed = False
         db_table = 'user'
