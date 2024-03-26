@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 
@@ -11,6 +10,15 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+
+    def get_user_by_username(username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+    def __str__(self) -> str:
+        return self.username + " - " + self.password
 
     class Meta:
         managed = False

@@ -4,6 +4,14 @@
 {% endblock %}
 
 {% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
   <div class="row justify-content-center">
     <div class="col-md-12 col-lg-10">
       <div class="wrap d-md-flex">
@@ -20,21 +28,22 @@
               </p>
             </div>
           </div>
-          <form action="#" class="signin-form">
+          <form action="#" class="signin-form" method="post">
+            {% csrf_token %}
             <div class="mb-3">
               <label class="form-label" for="username">Username</label>
-              <input type="text" class="form-control" id="username" placeholder="Username" required />
+              <input name="username" type="text" class="form-control" id="username" placeholder="Username" required />
             </div>
             <div class="mb-3">
               <label class="form-label" for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="Password" required />
+              <input name="password" type="password" class="form-control" id="password" placeholder="Password" required />
             </div>
             <div class="mb-3 form-check">
               <input type="checkbox" class="form-check-input" id="rememberMe" checked />
               <label class="form-check-label" for="rememberMe">Remember Me</label>
             </div>
             <div class="d-grid mb-3">
-              <button type="submit" class="btn btn-primary">Sign In</button>
+              <button type="submit" class="btn btn-primary">Login</button>
             </div>
           </form>
           <p class="text-center">
