@@ -46,6 +46,16 @@ a.card-link {
     width: 500px;
 }
 
+.img {
+    background-repeat: no-repeat;
+    /* Prevent background image from repeating */
+    background-size: cover;
+    /* Scale the background image to cover the entire container */
+    background-position: center center;
+    /* Center the background image horizontally and vertically */
+}
+
+
 .img,
 .login-wrap {
     border: #4f4f4f solid 2px;

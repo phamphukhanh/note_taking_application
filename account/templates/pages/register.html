@@ -1,0 +1,53 @@
+{% extends 'pages/account_base.html' %}
+{% block title %}
+  Register
+{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+  <div class="img" style="background-image: url(/static/images/notaki-portrait.png);"></div>
+  <div class="login-wrap p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>Register</h3>
+      <div class="social-media">
+        <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+        <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
+      </div>
+    </div>
+    <form action="#" class="signin-form" method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label" for="username">Username (Email)</label>
+        <input name="username" type="email" class="form-control" id="username" placeholder="Username" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input name="password" type="password" class="form-control" id="password" placeholder="Password" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="name">Name</label>
+        <input name="name" type="text" class="form-control" id="name" placeholder="Name" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="phone">Phone</label>
+        <input name="phone" type="text" class="form-control" id="phone" placeholder="Phone" required />
+      </div>
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+    </form>
+    <p class="text-center">
+      Already have an account?
+      <a id="account-link" data-bs-toggle="tab" href="{% url 'login' %}">Login</a>
+    </p>
+  </div>
+{% endblock %}

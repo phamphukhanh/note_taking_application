@@ -6,51 +6,58 @@
 {% block content %}
   {% if messages %}
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+      {% if message and error %}
+        <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      {% endif %}
+      {% if message and success %}
+        <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      {% endif %}
     {% endfor %}
   {% endif %}
-  <div class="row justify-content-center">
-    <div class="col-md-12 col-lg-10">
-      <div class="wrap d-md-flex">
-        <div class="img" style="background-image: url(/static/images/notaki_logo.png);"></div>
-        <div class="login-wrap p-4">
-          <div class="d-flex">
-            <div class="w-100">
-              <h3 class="mb-4">Login</h3>
-            </div>
-            <div class="w-100">
-              <p class="social-media d-flex justify-content-end">
-                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
-                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
-              </p>
-            </div>
-          </div>
-          <form action="#" class="signin-form" method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label class="form-label" for="username">Username</label>
-              <input name="username" type="text" class="form-control" id="username" placeholder="Username" required />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="password">Password</label>
-              <input name="password" type="password" class="form-control" id="password" placeholder="Password" required />
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="rememberMe" checked />
-              <label class="form-check-label" for="rememberMe">Remember Me</label>
-            </div>
-            <div class="d-grid mb-3">
-              <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-          </form>
-          <p class="text-center">
-            Not a member? <a data-bs-toggle="tab" href="#signup">Sign Up</a>
-          </p>
-        </div>
+  <div class="img" style="background-image: url(/static/images/notaki.png);"></div>
+  <div class="login-wrap p-4">
+    <div class="d-flex">
+      <div class="w-100">
+        <h3 class="mb-4">Login</h3>
+      </div>
+      <div class="w-100">
+        <p class="social-media d-flex justify-content-end">
+          <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+          <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
+        </p>
       </div>
     </div>
+    <form action="#" class="signin-form" method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label" for="username">Username (Email)</label>
+        <input name="username" type="email" class="form-control" id="username" placeholder="Username" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input name="password" type="password" class="form-control" id="password" placeholder="Password" required />
+      </div>
+      {% comment %} <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="rememberMe" checked />
+        <label class="form-check-label" for="rememberMe">Remember Me</label>
+      </div> {% endcomment %}
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </form>
+    <p class="text-center">
+      Not a member?
+      <a id="account-link" data-bs-toggle="tab" href="{% url 'register' %}">Register</a>
+    </p>
   </div>
 {% endblock %}

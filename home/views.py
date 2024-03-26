@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Note
 from django.db.models import Q
 # Create your views here.
@@ -16,7 +16,7 @@ def check_login(view_func):
         if is_logged_in(request):
             return view_func(request, *args, **kwargs)
         else:
-            return render(request, 'pages/login.html')
+            return redirect('login')
     return wrapped_view
 
 
