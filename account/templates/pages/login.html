@@ -5,24 +5,22 @@
 
 {% block content %}
   {% if messages %}
+  <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
     {% for message in messages %}
-      {% if message and error %}
-        <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        </div>
-      {% endif %}
-      {% if message and success %}
-        <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        </div>
-      {% endif %}
+      <div class="alert alert-dismissible fade show
+        {% if message.tags == 'error' %}
+          alert-danger
+        {% elif message.tags == 'success' %}
+          alert-success
+        {% else %}
+          alert-info
+        {% endif %} "
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     {% endfor %}
+  </div>
   {% endif %}
   <div class="img" style="background-image: url(/static/images/notaki.png);"></div>
   <div class="login-wrap p-4">

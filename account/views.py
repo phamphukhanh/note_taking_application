@@ -10,9 +10,7 @@ def login_user(request):
     if request.method == "POST" and 'username' in request.POST and 'password' in request.POST:
         username = request.POST['username']
         password = hashlib.sha256(request.POST['password'].encode('utf-8')).hexdigest()
-        print("Form:", username, password)
         user = User.get_user_by_username(username)
-        print("Database:",user)
         if user is not None and user.password == password:
             request.session['username'] = user.username
             request.session['name'] = user.name
