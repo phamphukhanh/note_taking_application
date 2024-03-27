@@ -12,6 +12,12 @@ class Note(models.Model):
     date_created = models.DateTimeField()
     date_modified = models.DateTimeField()
 
+    def get_note_by_id(note_id):
+        try:
+            return Note.objects.get(id=id)
+        except Note.DoesNotExist:
+            return None
+
     def __str__(self):
         return self.title
 
@@ -28,6 +34,15 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+
+    def get_user_by_username(username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+    def __str__(self) -> str:
+        return self.username + " - " + self.password
 
     class Meta:
         managed = False

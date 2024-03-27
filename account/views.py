@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
-from .models import User
+from home.models import User
 import hashlib
 # Create your views here.
 

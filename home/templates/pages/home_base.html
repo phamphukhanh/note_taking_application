@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link btn btn-primary" aria-current="page" href="#">Add a new note</a>
+              <a class="nav-link btn btn-primary" aria-current="page" href="{% url 'add_note' %}">Add a new note</a>
             </li>
             <form id="search-form" class="d-flex ms-3 search-bar" role="search" action="{% url 'find_note' %}" method="get">
               <input class="form-control me-2" type="search" placeholder="Search for note" aria-label="Search for note" name="query" />
