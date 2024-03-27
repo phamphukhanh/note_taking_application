@@ -5,6 +5,34 @@
 {% endblock %}
 
 {% block content %}
+  {% if messages %}
+    <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
+      {% for message in messages %}
+        <div class="alert alert-dismissible fade show
+          {% if message.tags == 'error' %}
+            alert-danger
+          {% elif message.tags == 'success' %}
+            alert-success
+            {% else %}
+            alert-info
+          {% endif %} "
+          role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <script>
+          $(document).ready(function () {
+            $('.alert')
+              .delay(500)
+              .fadeIn('normal', function () {
+                $(this).delay(2500).fadeOut()
+              })
+          })
+        </script>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <div class="container">
     <div class="row">
       {% for note in Notes %}

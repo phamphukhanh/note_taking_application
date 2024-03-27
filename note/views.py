@@ -1,6 +1,8 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import Http404
 from home.models import Note, User
+from django.contrib import messages
 # Create your views here.
 
 
@@ -16,8 +18,11 @@ def add_note(request):
     note.username = user
     note.title = ''
     note.content = ''
+    note.date_modified = datetime.now()
+    note.date_created = datetime.now()
     note.save()
     note_id = note.id
+    messages.success(request, 'Note added successfully')
     return redirect(f'./edit?note_id={note_id}')
 
 
@@ -25,7 +30,9 @@ def delete_note(request):
     note_id = request.GET.get('note_id')
     note = Note.objects.get(id=note_id)
     note.delete()
+    messages.success(request, 'Note deleted successfully')
     return redirect('home')
+
 
 def edit_note(request):
     if request.method == 'POST':
@@ -44,7 +51,9 @@ def edit_note(request):
 
         note.title = title
         note.content = content
+        note.date_modified = datetime.now()
         note.save()
+        messages.success(request, 'Note saved successfully')
         return redirect('home')
     else:
         # Handle GET requests (if any)
