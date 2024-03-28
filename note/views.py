@@ -1,7 +1,7 @@
-from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import Http404
 from home.models import Note, User
+from django.utils import timezone
 from django.contrib import messages
 # Create your views here.
 
@@ -18,8 +18,8 @@ def add_note(request):
     note.username = user
     note.title = ''
     note.content = ''
-    note.date_modified = datetime.now()
-    note.date_created = datetime.now()
+    note.date_modified = timezone.now()
+    note.date_created = timezone.now()
     note.save()
     note_id = note.id
     messages.success(request, 'Note added successfully')
@@ -51,7 +51,7 @@ def edit_note(request):
 
         note.title = title
         note.content = content
-        note.date_modified = datetime.now()
+        note.date_modified = timezone.now()
         note.save()
         messages.success(request, 'Note saved successfully')
         return redirect('home')
