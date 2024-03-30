@@ -100,3 +100,9 @@ a.card-link {
 .button:hover span {
     display: inline-block;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

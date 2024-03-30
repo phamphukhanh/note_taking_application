@@ -35,7 +35,11 @@
       </div>
       <div class="mb-3">
         <label class="form-label" for="phone">Phone</label>
-        <input name="phone" type="text" class="form-control" id="phone" placeholder="Phone" required />
+        <input name="phone" type="number" class="form-control" id="phone" placeholder="Phone" 
+        onkeyup="if(value<0) value=0;" 
+        onkeydown="if (event.key === 'e' || event.key === 'E') { event.preventDefault(); }
+        else if (this.value.length === 10 && event.keyCode !== 8) { event.preventDefault(); }"
+        required />
       </div>
       <div class="d-grid mb-3">
         <button type="submit" class="btn btn-primary">Register</button>
