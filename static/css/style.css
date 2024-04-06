@@ -103,6 +103,61 @@ a.card-link {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Styles for messages */
+.message {
+    max-width: 70%; /* Adjust as needed */
+    margin-bottom: 10px;
+    clear: both;
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.message.user {
+    float: right;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.message.system {
+    float: left;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.message.user::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #007bff transparent transparent;
+    transform: translateY(-50%);
+}
+
+.message.system::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #f0f0f0;
+    transform: translateY(-50%);
+}
+
+/* Styles for input field */
+.message-input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
 }

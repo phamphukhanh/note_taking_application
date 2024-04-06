@@ -5,6 +5,7 @@
     <link rel="shortcut icon" href="#" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Note</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -16,14 +17,15 @@
         }
       }
       
-      document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById('note-title').addEventListener('keydown', function(event) {
-          if (event.keyCode === 9) { // Tab key
-            event.preventDefault();
-            document.getElementById('note-content').focus();
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('note-title').addEventListener('keydown', function (event) {
+          if (event.keyCode === 9) {
+            // Tab key
+            event.preventDefault()
+            document.getElementById('note-content').focus()
           }
-        });
-      });
+        })
+      })
     </script>
   </head>
   <link rel="stylesheet" href="/static/css/style.css" />
@@ -32,7 +34,7 @@
       <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
         {% for message in messages %}
           <div class="alert alert-dismissible fade show
-        {% if message.tags == 'success' %}alert-success{% endif %} " role="alert">
+        {% if message.tags == 'success' %}{% endif %} " role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
@@ -96,8 +98,38 @@
                 <h5 class="offcanvas-title" id="offcanvasRightLabel">Note summary</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
-              <div class="offcanvas-body">
-                ...
+              <hr />
+              <div class="offcanvas-body" style="height: calc(100% - 70px); overflow-y: auto;">
+                <div class="conversation">
+                  <div class="message user">
+                    <p>Hello, can you assist me?</p>
+                  </div>
+                  <div class="message system">
+                    <p>Hi there! I'm here to help.</p>
+                  </div>
+                  <div class="message user">
+                    <p>I need help with a technical issue.</p>
+                  </div>
+                  <div class="message system">
+                    <p>Of course, I'll do my best to assist you. What seems to be the problem?</p>
+                  </div>
+                  <div class="message user">
+                    <p>It's about setting up a new software.</p>
+                  </div>
+                  <div class="message system">
+                    <p>Alright, I can guide you through the process. Let's start with...</p>
+                  </div>
+                  <!-- Add more messages as needed -->
+                </div>
+              </div>
+              <!-- Input field for sending messages -->
+              <div class="message-input">
+                <form>
+                  <div class="input-group">
+                    <input type="text" id="userMessage" class="form-control" placeholder="Type your message..." />
+                    <button type="submit" class="btn btn-primary">Send</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -106,8 +138,8 @@
           </div>
         </div>
         <!-- Date section -->
-        <b class="small">Created: </b><small>{{ note.date_created }}</small>
-        <b class="small ms-4">Modified: </b><small>{{ note.date_modified }}</small>
+        <b class="small">Created:</b><small>{{ note.date_created }}</small>
+        <b class="small ms-4">Modified:</b><small>{{ note.date_modified }}</small>
         <hr />
         <!-- Content section -->
         <div class="input-group">
