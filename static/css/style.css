@@ -109,7 +109,8 @@ input::-webkit-inner-spin-button {
 
 /* Styles for messages */
 .message {
-    max-width: 70%; /* Adjust as needed */
+    max-width: 70%;
+    /* Adjust as needed */
     margin-bottom: 10px;
     clear: both;
     position: relative;
@@ -129,33 +130,8 @@ input::-webkit-inner-spin-button {
     color: #333;
 }
 
-.message.user::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: -10px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent #007bff transparent transparent;
-    transform: translateY(-50%);
-}
-
-.message.system::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -10px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent transparent #f0f0f0;
-    transform: translateY(-50%);
-}
-
 /* Styles for input field */
 .message-input {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     width: 100%;
     padding: 15px;
     background-color: #fff;

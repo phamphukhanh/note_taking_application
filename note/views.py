@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from home.models import Note, User
 from django.utils import timezone
+from django.http import JsonResponse
 from django.contrib import messages
 # Create your views here.
 
@@ -58,3 +59,13 @@ def edit_note(request):
     else:
         # Handle GET requests (if any)
         pass
+
+
+def get_system_reply(request):
+    if request.method == 'POST':
+        user_message = request.POST.get('user_message')
+        # Process user's message and generate system's reply
+        system_reply = "This is a sample system reply, you said: " + user_message
+        return JsonResponse({'system_reply': system_reply})
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
