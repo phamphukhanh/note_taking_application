@@ -90,7 +90,16 @@
             <a class="btn btn-info" aria-current="page" href="#"><i class="fa fa-microphone fa-lg" aria-hidden="true"></i></a>
           </div>
           <div class="col-auto">
-            <a class="btn btn-info" aria-current="page" href="#"><i class="fa fa-file-text fa-lg" aria-hidden="true"></i></a>
+            <a class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" href="#"><i class="fa fa-file-text fa-lg" aria-hidden="true"></i></a>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">Note summary</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                ...
+              </div>
+            </div>
           </div>
           <div class="col-auto">
             <a class="btn btn-danger" aria-current="page" href="#" onclick="confirmDelete({{ note.id }})"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
