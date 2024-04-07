@@ -1,9 +1,15 @@
+import json
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from home.models import Note, User
 from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib import messages
+import os
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+from langchain.memory import ConversationBufferMemory
 # Create your views here.
 
 
@@ -61,11 +67,35 @@ def edit_note(request):
         pass
 
 
+@csrf_exempt
 def get_system_reply(request):
     if request.method == 'POST':
-        user_message = request.POST.get('user_message')
+        # Parse JSON data from the request body
+        data = json.loads(request.body)
+        user_message = data.get('user_message')
+
         # Process user's message and generate system's reply
-        system_reply = "This is a sample system reply, you said: " + user_message
+        system_reply = "This is a sample system reply, you said: " + \
+            str(user_message)
+
         return JsonResponse({'system_reply': system_reply})
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+def chat():
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    chat = ChatOpenAI(openai_api_key=OPENAI_API_KEY)
+    history = ConversationBufferMemory()
+    while True:
+        user_input = input("Question: ")
+        history.chat_memory.add_user_message(user_input)
+        response = chat.invoke(
+            [
+                HumanMessage(
+                    content=user_input
+                )
+            ]
+        ).to_json()['kwargs']['content']
+        history.chat_memory.add_ai_message(response)
+        print(f"AI: {response}")

@@ -99,7 +99,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <hr />
-              <div class="offcanvas-body">
+              <div class="offcanvas-body" id="offcanvasBody">
                 <div class="message user">
                   <p>Hello, can you assist me?</p>
                 </div>
@@ -169,7 +169,7 @@
           // Clear input field
           document.getElementById('userMessage').value = ''
           // Fetch system's reply from Django server
-          fetch('/get_system_reply/', {
+          fetch('reply', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -186,12 +186,16 @@
             .catch((error) => {
               console.error('Error:', error)
             })
+            .finally(() => {
+              scrollToBottom()
+            })
         }
       }
       
       // Event listener for the "Send" button
       document.getElementById('sendMessageBtn').addEventListener('click', function () {
         sendMessage()
+        
       })
       
       // Set key press event listener for the user message input field
@@ -201,6 +205,11 @@
           sendMessage() // Call sendMessage function directly
         }
       })
+      
+      function scrollToBottom() {
+        var offcanvasBody = document.getElementById('offcanvasBody')
+        offcanvasBody.scrollTop = offcanvasBody.scrollHeight
+      }
     </script>
   </body>
 </html>
