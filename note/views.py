@@ -68,34 +68,26 @@ def edit_note(request):
 
 
 @csrf_exempt
-def get_system_reply(request):
-    if request.method == 'POST':
-        # Parse JSON data from the request body
-        data = json.loads(request.body)
-        user_message = data.get('user_message')
-
-        # Process user's message and generate system's reply
-        system_reply = "This is a sample system reply, you said: " + \
-            str(user_message)
-
-        return JsonResponse({'system_reply': system_reply})
-    else:
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
-
-
-def chat():
+def chat(request):
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
     chat = ChatOpenAI(openai_api_key=OPENAI_API_KEY)
     history = ConversationBufferMemory()
-    while True:
-        user_input = input("Question: ")
-        history.chat_memory.add_user_message(user_input)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        note_content = data.get('note_content')
+        initial_message = "I have a note which contains the following content: \n" + note_content
+        history.chat_memory.add_user_message(initial_message)
+
+        user_message = data.get('user_message')
+        history.chat_memory.add_user_message(user_message)
         response = chat.invoke(
             [
                 HumanMessage(
-                    content=user_input
+                    content=user_message
                 )
             ]
         ).to_json()['kwargs']['content']
         history.chat_memory.add_ai_message(response)
-        print(f"AI: {response}")
+        return JsonResponse({'system_reply': response})
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)

@@ -98,39 +98,9 @@
                 <h5 class="offcanvas-title" id="offcanvasRightLabel">Note summary</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
+              <small style="padding-left: 16px; color: red;"><b><u>*Warning:</u></b> your chat history will not be stored due to system limitation. Saving chat history feature will be added in the future.</small>
               <hr />
               <div class="offcanvas-body" id="offcanvasBody">
-                <div class="message user">
-                  <p>Hello, can you assist me?</p>
-                </div>
-                <div class="message system">
-                  <p>Hi there! I'm here to help.</p>
-                </div>
-                <div class="message user">
-                  <p>I need help with a technical issue.</p>
-                </div>
-                <div class="message system">
-                  <p>Of course, I'll do my best to assist you. What seems to be the problem?</p>
-                </div>
-                <div class="message user">
-                  <p>It's about setting up a new software.</p>
-                </div>
-                <div class="message system">
-                  <p>Alright, I can guide you through the process. Let's start with...</p>
-                </div>
-                <div class="message user">
-                  <p>It's about setting up a new software.</p>
-                </div>
-                <div class="message system">
-                  <p>Alright, I can guide you through the process. Let's start with...</p>
-                </div>
-                <div class="message user">
-                  <p>It's about setting up a new software.</p>
-                </div>
-                <div class="message system">
-                  <p>Alright, I can guide you through the process. Let's start with...</p>
-                </div>
-                <!-- Add more messages as needed -->
               </div>
               <!-- Input field for sending messages -->
               <div class="message-input">
@@ -146,8 +116,8 @@
           </div>
         </div>
         <!-- Date section -->
-        <b class="small">Created:</b><small>{{ note.date_created }}</small>
-        <b class="small ms-4">Modified:</b><small>{{ note.date_modified }}</small>
+        <b class="small">Created:</b> <small>{{ note.date_created }}</small>
+        <b class="small ms-4">Modified:</b> <small>{{ note.date_modified }}</small>
         <hr />
         <!-- Content section -->
         <div class="input-group">
@@ -160,6 +130,7 @@
       // Function to send message
       function sendMessage() {
         const userMessage = document.getElementById('userMessage').value.trim()
+        const noteContent = document.getElementById('note-content').value.trim()
         if (userMessage) {
           // Add user message to the conversation
           const userMessageElement = document.createElement('div')
@@ -174,7 +145,10 @@
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ user_message: userMessage })
+            body: JSON.stringify({ 
+              user_message: userMessage,
+              note_content: noteContent,
+            })
           })
             .then((response) => response.json())
             .then((data) => {
@@ -195,7 +169,6 @@
       // Event listener for the "Send" button
       document.getElementById('sendMessageBtn').addEventListener('click', function () {
         sendMessage()
-        
       })
       
       // Set key press event listener for the user message input field

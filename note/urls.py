@@ -6,5 +6,5 @@ urlpatterns = [
     path('add', views.add_note, name='add_note'),
     path('save', views.edit_note, name='save_note'),
     path('delete', views.delete_note, name='delete_note'),
-    path('reply', views.get_system_reply, name='summarize_note'),
+    path('reply', views.chat, name='reply'),
 ]
