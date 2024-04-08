@@ -16,6 +16,47 @@
         }
       }
       
+      function showTranslateModal(noteId) {
+        const modal = document.createElement('div');
+        modal.classList.add('modal', 'fade');
+        modal.setAttribute('tabindex', '-1');
+        const formAction = "{% url 'translate_note' %}?note_id="+ noteId
+        modal.innerHTML = `
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Translate Note</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="${formAction}" method="POST">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="source_language" class="form-label">Source Language</label>
+                    <select class="form-select" id="source_language" name="source_language">
+                      <option value="vi">Vietnamese</option>
+                      <option value="en">English</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="target_language" class="form-label">Target Language</label>
+                    <select class="form-select" id="target_language" name="target_language">
+                      <option value="en">English</option>
+                      <option value="vi">Vietnamese</option>
+                    </select>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Translate</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        $(modal).modal('show');
+      }
+
       document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('note-title').addEventListener('keydown', function(event) {
           if (event.keyCode === 9) { // Tab key
@@ -32,7 +73,7 @@
       <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
         {% for message in messages %}
           <div class="alert alert-dismissible fade show
-        {% if message.tags == 'success' %}alert-success{% endif %} " role="alert">
+        {% if message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% endif %} " role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
@@ -84,7 +125,7 @@
             <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i></button>
           </div>
           <div class="col-auto">
-            <a class="btn btn-info" aria-current="page" href="#"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></a>
+            <a class="btn btn-info" aria-current="page" href="#" onclick="showTranslateModal({{ note.id }})"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></a>
           </div>
           <div class="col-auto">
             <a class="btn btn-info" aria-current="page" href="#"><i class="fa fa-microphone fa-lg" aria-hidden="true"></i></a>
