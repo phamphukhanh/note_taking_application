@@ -80,7 +80,7 @@ def translate_note(request):
                 note_translated = Note()
                 user = User.objects.get(username=request.session.get('username'))
                 note_translated.username = user
-                note_translated.title = note_title
+                note_translated.title = "Translation of " + note_title
                 note_translated.content = translated_text
                 note_translated.date_modified = timezone.now()
                 note_translated.date_created = timezone.now()
