@@ -1,9 +1,15 @@
+import json
+import os
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from home.models import Note, User
 from django.utils import timezone
+from django.http import JsonResponse
 from django.contrib import messages
 from google.cloud import translate_v2
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
 # Create your views here.
 
 
@@ -59,6 +65,30 @@ def edit_note(request):
     else:
         # Handle GET requests (if any)
         pass
+
+
+@csrf_exempt
+def chat(request):
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    chat = ChatOpenAI(openai_api_key=OPENAI_API_KEY)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        note_content = data.get('note_content')
+        note_content = "I have a note which contains the following content: \n" + note_content + \
+            "\n\n" + \
+            "Sumarize the note for me (in bullet • or numbering format if neccessary) in the language that I had written in the content. No yapping, Limit prose, No fluff."
+        response = chat.invoke(
+            [
+                HumanMessage(
+                    content=note_content
+                )
+            ]
+        ).to_json()['kwargs']['content']
+        print(response)
+        return JsonResponse({'summarization': response})
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+
 
 def translate_note(request):
     if request.method == "POST":

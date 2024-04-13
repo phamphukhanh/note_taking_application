@@ -103,6 +103,16 @@ a.card-link {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Styles for messages */
+.message {
+    /* Adjust as needed */
+    margin-bottom: 10px;
+    text-align: justify;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #aaaaaa;
 }
