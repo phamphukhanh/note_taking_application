@@ -9,7 +9,6 @@ from django.contrib import messages
 import os
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
-from langchain.memory import ConversationBufferMemory
 # Create your views here.
 
 
@@ -71,23 +70,20 @@ def edit_note(request):
 def chat(request):
     OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
     chat = ChatOpenAI(openai_api_key=OPENAI_API_KEY)
-    history = ConversationBufferMemory()
     if request.method == 'POST':
         data = json.loads(request.body)
         note_content = data.get('note_content')
-        initial_message = "I have a note which contains the following content: \n" + note_content
-        history.chat_memory.add_user_message(initial_message)
-
-        user_message = data.get('user_message')
-        history.chat_memory.add_user_message(user_message)
+        note_content = "I have a note which contains the following content: \n" + note_content + \
+            "\n\n" + \
+            "Sumarize the note for me (in bullet • or numbering format if neccessary) in the language that I had written in the content. No yapping, Limit prose, No fluff."
         response = chat.invoke(
             [
                 HumanMessage(
-                    content=user_message
+                    content=note_content
                 )
             ]
         ).to_json()['kwargs']['content']
-        history.chat_memory.add_ai_message(response)
-        return JsonResponse({'system_reply': response})
+        print(response)
+        return JsonResponse({'summarization': response})
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
