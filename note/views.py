@@ -1,4 +1,5 @@
 import json
+import os
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
@@ -6,7 +7,7 @@ from home.models import Note, User
 from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib import messages
-import os
+from google.cloud import translate_v2
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 # Create your views here.
@@ -87,3 +88,41 @@ def chat(request):
         return JsonResponse({'summarization': response})
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+def translate_note(request):
+    if request.method == "POST":
+        note_id = request.GET.get('note_id')
+        note = Note.objects.get(id=note_id)
+        note_title = note.title
+        note_content = note.content
+        if note_content:
+            source_language = request.POST.get('source_language')
+            target_language = request.POST.get('target_language')
+
+            if source_language != target_language:
+                translate_client = translate_v2.Client()
+                translation = translate_client.translate(
+                    values=note_content, source_language=source_language ,target_language=target_language
+                )
+                translated_text = translation['translatedText']
+
+                note_translated = Note()
+                user = User.objects.get(username=request.session.get('username'))
+                note_translated.username = user
+                note_translated.title = "Translation of " + note_title
+                note_translated.content = translated_text
+                note_translated.date_modified = timezone.now()
+                note_translated.date_created = timezone.now()
+                note_translated.save()
+
+                messages.success(request, 'Note translated successfully.')
+                return redirect('home')
+            else:
+                messages.warning(request, 'Looks like you chose the same language for translation. Please select different languages to translate the note.')
+                return redirect(f'./edit?note_id={note_id}')
+        else:
+            messages.warning(request, 'Note has no content to translate. Please save the note and try again.')
+            return redirect(f'./edit?note_id={note_id}')
+    else:
+        pass
