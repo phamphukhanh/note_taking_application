@@ -1,5 +1,5 @@
 import json
-import os
+import openaikey
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
@@ -68,9 +68,8 @@ def edit_note(request):
 
 
 @csrf_exempt
-def chat(request):
-    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-    chat = ChatOpenAI(openai_api_key=OPENAI_API_KEY)
+def summary(request):
+    chat = ChatOpenAI(openai_api_key=openaikey.OPENAI_API_KEY)
     if request.method == 'POST':
         data = json.loads(request.body)
         note_content = data.get('note_content')
