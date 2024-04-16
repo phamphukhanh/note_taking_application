@@ -2,3 +2,5 @@
 openaikey.py
 
 googlekey.json
+
+*.pyc
