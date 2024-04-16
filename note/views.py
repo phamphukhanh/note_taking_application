@@ -68,7 +68,7 @@ def edit_note(request):
 
 
 @csrf_exempt
-def summary(request):
+def summarize_note(request):
     chat = ChatOpenAI(openai_api_key=openaikey.OPENAI_API_KEY)
     if request.method == 'POST':
         data = json.loads(request.body)

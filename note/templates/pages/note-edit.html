@@ -144,7 +144,7 @@
       function sendSummary() {
         const noteContent = document.getElementById('note-content').value.trim()
         if (noteContent) {
-          fetch('reply', {
+          fetch('summarize', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
