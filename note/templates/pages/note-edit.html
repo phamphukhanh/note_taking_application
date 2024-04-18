@@ -5,6 +5,7 @@
     <link rel="shortcut icon" href="#" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Note</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -16,14 +17,56 @@
         }
       }
       
+      function showTranslateModal(noteId) {
+        const modal = document.createElement('div');
+        modal.classList.add('modal', 'fade');
+        modal.setAttribute('tabindex', '-1');
+        const formAction = "{% url 'translate_note' %}?note_id="+ noteId
+        modal.innerHTML = `
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Translate Note</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="${formAction}" method="POST">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="source_language" class="form-label">Source Language</label>
+                    <select class="form-select" id="source_language" name="source_language">
+                      <option value="vi">Vietnamese</option>
+                      <option value="en">English</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="target_language" class="form-label">Target Language</label>
+                    <select class="form-select" id="target_language" name="target_language">
+                      <option value="en">English</option>
+                      <option value="vi">Vietnamese</option>
+                    </select>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Translate</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        $(modal).modal('show');
+      }
+
       document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('note-title').addEventListener('keydown', function(event) {
-          if (event.keyCode === 9) { // Tab key
+          if (event.keyCode === 9) { 
+            // Tab key
             event.preventDefault();
             document.getElementById('note-content').focus();
           }
-        });
-      });
+        })
+      })
     </script>
   </head>
   <link rel="stylesheet" href="/static/css/style.css" />
@@ -32,7 +75,7 @@
       <div class="position-fixed mt-3 top-0 start-50 translate-middle-x" style="z-index: 1050">
         {% for message in messages %}
           <div class="alert alert-dismissible fade show
-        {% if message.tags == 'success' %}alert-success{% endif %} " role="alert">
+        {% if message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% endif %} " role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
@@ -47,26 +90,6 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="/home">⯇ Notaki</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-          <!-- Aligning the dropdown menu to the right -->
-          <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="/static/images/user.png" alt="Avatar" class="avatar" />
-                Hello, {{ request.session.name }}
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                <li>
-                  <form id="logout-form" method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="dropdown-item">Logout</button>
-                  </form>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
       </div>
     </nav>
     <div class="container mt-6">
@@ -84,21 +107,30 @@
             <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i></button>
           </div>
           <div class="col-auto">
-            <a class="btn btn-info" aria-current="page" href="#"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></a>
+            <a class="btn btn-info" aria-current="page" href="#" onclick="showTranslateModal({{ note.id }})"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></a>
           </div>
           <div class="col-auto">
             <a class="btn btn-info" aria-current="page" href="#"><i class="fa fa-microphone fa-lg" aria-hidden="true"></i></a>
           </div>
           <div class="col-auto">
-            <a class="btn btn-info" aria-current="page" href="#"><i class="fa fa-file-text fa-lg" aria-hidden="true"></i></a>
+            <a id="summary" class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" href="#"><i class="fa fa-file-text fa-lg" aria-hidden="true"></i></a>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasRightLabel">Note summary</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <small style="padding-left: 16px; padding-bottom: 10px; color: #4169E1;"><b><u>*Reminder:</u></b> your summary will not be stored.</small>
+              <a style="margin-left: 20px; margin-right: 20px;" id="re-summary" class="btn btn-info" type="button" href="#"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></a>
+              <div class="offcanvas-body" id="offcanvasBody"></div>
+            </div>
           </div>
           <div class="col-auto">
             <a class="btn btn-danger" aria-current="page" href="#" onclick="confirmDelete({{ note.id }})"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
           </div>
         </div>
         <!-- Date section -->
-        <b class="small">Created: </b><small>{{ note.date_created }}</small>
-        <b class="small ms-4">Modified: </b><small>{{ note.date_modified }}</small>
+        <b class="small">Created:</b> <small>{{ note.date_created }}</small>
+        <b class="small ms-4">Modified:</b> <small>{{ note.date_modified }}</small>
         <hr />
         <!-- Content section -->
         <div class="input-group">
@@ -107,5 +139,60 @@
         </div>
       </form>
     </div>
+    <script>
+      // Function to send message
+      function sendSummary() {
+        const noteContent = document.getElementById('note-content').value.trim()
+        if (noteContent) {
+          fetch('summarize', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              note_content: noteContent
+            })
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const summarizationCounts = document.querySelectorAll('.message').length
+              const summarizedTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false })
+              const countTag = `<small class="text-muted">Summary No. ${summarizationCounts + 1}</small><br>`
+              const summarizedTag = `<small class="text-muted">Summarized at: ${summarizedTime}</small>`
+      
+              const summarization = document.createElement('div')
+              summarization.classList.add('message')
+              // Replace newlines with <br> tags
+              const summarizedContent = data.summarization.replace(/\n/g, '<br>')
+              summarization.innerHTML = `<p>${summarizedContent}</p>`
+              summarization.innerHTML += countTag
+              summarization.innerHTML += summarizedTag
+              document.querySelector('.offcanvas-body').appendChild(summarization)
+            })
+            .catch((error) => {
+              console.error('Error:', error)
+            })
+            .finally(() => {
+              scrollToBottom()
+            })
+        } else {
+          alert('Note content is empty. Please write something to summarize.')
+        }
+      }
+      
+      function scrollToBottom() {
+        var offcanvasBody = document.getElementById('offcanvasBody')
+        offcanvasBody.scrollTop = offcanvasBody.scrollHeight
+      }
+      
+      // Event listener for the "Send" button
+      document.getElementById('summary').addEventListener('click', function () {
+        sendSummary()
+      })
+      
+      document.getElementById('re-summary').addEventListener('click', function () {
+        sendSummary()
+      })
+    </script>
   </body>
 </html>
