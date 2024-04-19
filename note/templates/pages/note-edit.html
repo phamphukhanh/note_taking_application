@@ -246,38 +246,32 @@
 
           urlParams = new URLSearchParams(window.location.search);
           id = urlParams.get('note_id');
-          const targetLanguageSelect = document.getElementById("target_language2");
+          targetLanguageSelect = document.getElementById("target_language2");
+          selectedLanguageCode = targetLanguageSelect.value;
           targetLanguageSelect.addEventListener("change", function() {
-            const selectedLanguageCode = this.value;
-            recorder = new MediaRecorder(stream);
-
-            recorder.ondataavailable = e => {
-                chunks.push(e.data);
-            };
-  
-            recorder.onstop = e => {
-                const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-                chunks = [];
-  
-                // Send the Blob data to Django view using AJAX
-                const formData = new FormData();
-                formData.append('audio_data', blob);
-                formData.append('note_id', id);
-                formData.append('target_language', selectedLanguageCode);
-                const response = fetch('voice', {
-                    method: 'POST',
-                    body: formData
-                });
-  
-                if (response.ok) {
-                    const responseData = response.json();
-                    console.log('Server response:', responseData);
-                } else {
-                    console.error('Error sending audio data:', response.statusText);
-                }
-            };
-            can_record = true;  
+            selectedLanguageCode = this.value;
           });
+          recorder = new MediaRecorder(stream);
+
+          recorder.ondataavailable = e => {
+              chunks.push(e.data);
+          };
+
+          recorder.onstop = e => {
+              const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+              chunks = [];
+
+              // Send the Blob data to Django view using AJAX
+              const formData = new FormData();
+              formData.append('audio_data', blob);
+              formData.append('note_id', id);
+              formData.append('target_language', selectedLanguageCode);
+              const response = fetch('voice', {
+                  method: 'POST',
+                  body: formData
+              });
+          };
+          can_record = true;
       }
 
       function ToggleMic() {
