@@ -160,6 +160,9 @@ def voice_note(request):
                 note.content = transcription
                 note.date_modified = timezone.now()
                 note.save()
+                return JsonResponse({'transcription': transcription})
+            else:
+                return JsonResponse({'error': 'Error reusult audio data'})
     else:
-        pass
+        return JsonResponse({'error': 'Error receiving audio data'})
     
