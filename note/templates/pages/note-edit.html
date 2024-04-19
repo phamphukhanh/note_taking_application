@@ -89,7 +89,7 @@
     {% endif %}
     <nav class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/home">⯇ Notaki</a>
+        <a class="navbar-brand" href="/home" onclick="saveNote(event)">⯇ Notaki</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       </div>
     </nav>
@@ -204,7 +204,7 @@
           alert('Note content is empty. Please write something to summarize.')
         }
       }
-      
+      // Function to scroll to the bottom of the offcanvas
       function scrollToBottom() {
         var offcanvasBody = document.getElementById('offcanvasBody')
         offcanvasBody.scrollTop = offcanvasBody.scrollHeight
@@ -214,10 +214,17 @@
       document.getElementById('summary').addEventListener('click', function () {
         sendSummary()
       })
-      
+
+      // Event listener for the "Refresh" button
       document.getElementById('re-summary').addEventListener('click', function () {
         sendSummary()
       })
+      
+      // Save the note before leaving the page
+      function saveNote(event) {
+        event.preventDefault();
+        document.querySelector('form').submit()
+      }
 
       const mic_btn = document.querySelector('#mic');
       mic_btn.addEventListener('click', ToggleMic);
