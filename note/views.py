@@ -80,7 +80,7 @@ def summarize_note(request):
             "I have a note which contains the following content: \n"
             + note_content
             + "\n\n"
-            + "Sumarize the note for me (in bullet • or numbering format if neccessary) in the language that I had written in the content. No yapping, Limit prose, No fluff."
+            + "Summarize the note for me (in bullet • or numbering format if necessary) in the language that I had written in the content. No yapping, Limit prose, No fluff."
         )
         response = chat.invoke([HumanMessage(content=note_content)]).to_json()[
             "kwargs"
