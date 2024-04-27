@@ -1,0 +1,6 @@
+libmysqlclient-dev
+mysqlclient
+langchain
+google-cloud-speech
+google-cloud-translate
+langchain-openai
