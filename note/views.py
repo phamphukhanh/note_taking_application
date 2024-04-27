@@ -162,7 +162,7 @@ def voice_note(request):
                 note.save()
                 return JsonResponse({'transcription': transcription})
             else:
-                return JsonResponse({'error': 'Error reusult audio data'})
+                return JsonResponse({'error': 'Error result audio data'})
     else:
         return JsonResponse({'error': 'Error receiving audio data'})
     
